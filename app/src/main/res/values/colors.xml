@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary">#E43F3F</color>
+    <color name="primary_dark">#E12929</color>
+    <color name="primary_darker">#CC1D1D</color>
+    <color name="accent">#FFFFFF</color>
+    <color name="comment_backgroud_grey">#EEEEEE</color>
+    <color name="black">#000000</color>
+    <color name="jet">#222222</color>
+    <color name="oil">#333333</color>
+    <color name="monsoon">#777777</color>
+    <color name="jumbo">#888888</color>
+    <color name="aluminum">#999999</color>
+    <color name="base">#AAAAAA</color>
+    <color name="iron">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+    <color name="actionRed">#BF360C</color>
+    <color name="black_background_white_text">#263238</color>
+    <color name="white_text_for_black_background">#FFFFFF</color>
+    <color name="tab_grey">#757575</color>
+    <color name="bar_one">#0D47A1</color>
+    <color name="bar_two">#2962FF</color>
+    <color name="bar_three">#64B5F6</color>
+    <color name="bar_four"> #BBDEF8</color>
+    <color name="bar_five">#E1F5FE</color>
+    <color name="comment_grey">#F5F5F5</color>
+    <color name="logo_red">#D84315</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
 </resources>
