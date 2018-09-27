@@ -1,0 +1,45 @@
+{
+  "project_info": {
+    "project_number": "158044061323",
+    "firebase_url": "https://fan-polls-udacity.firebaseio.com",
+    "project_id": "fan-polls-udacity",
+    "storage_bucket": "fan-polls-udacity.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158044061323:android:a30bec2a2f49b166",
+        "android_client_info": {
+          "package_name": "com.troychuinard.livevotingudacity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158044061323-j7qf0t0knl6h9rfcb6fn8b6j91lmk630.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjqn-2wVh3nTDAK2nBgcAlwlzj4w6MZ2g"
+        },
+        {
+          "current_key": "AIzaSyBjqn-2wVh3nTDAK2nBgcAlwlzj4w6MZ2g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
