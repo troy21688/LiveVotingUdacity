@@ -70,7 +70,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
 
         mBaseRef = FirebaseDatabase.getInstance().getReference();
         mUserRef = mBaseRef.child("Users");
@@ -92,12 +91,17 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
                         DialogFragment f = new DisplayNameDialogFragment();
                         f.show(getSupportFragmentManager(), "DisplayNameDialogFragment");
                     } else {
+
                         Intent toHomeActivity = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(toHomeActivity);
                         // User is fsigned in
                         Log.d("TAG", "onAuthStateChanged:signed_in:" + user.getUid());
+
                     }
 
+                } else {
+                    setContentView(R.layout.activity_signup);
+                    ButterKnife.bind(SignupActivity.this);
                 }
 
             }
@@ -119,11 +123,13 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
         }
     }
 
+
     @OnClick({R.id.btn_signup, R.id.btn_signin})
     public void onItemClicked(View v) {
         switch (v.getId()) {
             case R.id.btn_signup:
                 signup();
+                Toast.makeText(getApplicationContext(),"HELLO",Toast.LENGTH_LONG).show();
                 break;
             case R.id.btn_signin:
                 signIn();
