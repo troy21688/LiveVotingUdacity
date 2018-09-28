@@ -87,4 +87,5 @@
     <string name="display_name_hint">Enter your display name</string>
     <string name="dialog_done">Done</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_poll_host">PollHostActivity</string>
 </resources>

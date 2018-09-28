@@ -21,6 +21,10 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PollHostActivity"
+            android:label="@string/title_activity_poll_host"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

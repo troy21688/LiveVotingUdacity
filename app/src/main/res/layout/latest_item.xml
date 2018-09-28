@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:background="@color/white" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/individual_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_gray"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/image_frame"
+            android:layout_width="105dp"
+            android:layout_height="75dp">
+
+            <ProgressBar
+                android:id="@+id/progress_bar_white"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/loading_spinner_white" />
+
+            <ImageView
+                android:layout_margin="4dp"
+                android:id="@+id/pollThumbNailImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </FrameLayout>
+
+        <TextView
+            android:text="TEST_TEXT"
+            android:layout_toRightOf="@id/image_frame"
+            android:layout_toEndOf="@id/image_frame"
+            android:layout_marginStart="3dp"
+            android:layout_marginLeft="3dp"
+            android:id="@+id/latest_item_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/latest_item_poll_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="test_text_again"
+            android:textColor="@color/white"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"
+            android:layout_gravity="bottom|end"/>
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:background="@color/white" />
+
+</LinearLayout>

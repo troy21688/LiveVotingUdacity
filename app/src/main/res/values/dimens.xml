@@ -1,3 +1,29 @@
 <resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="center_indentation">80dp</dimen>
+    <dimen name="poll_question_text_size">14sp</dimen>
+    <dimen name="radio_question_margin_left">80dp</dimen>
+    <dimen name="radio_button_answer_text_size">16sp</dimen>
+    <dimen name="answer_label_text_size">2sp</dimen>
+    <dimen name="answer_value_label_text_size">8dp</dimen>
+    <dimen name="vote_count_label_text_size_lower_right">17sp</dimen>
+    <dimen name="comment_image_height_dimen">150dp</dimen>
+    <dimen name="comment_image_width_dimen">275dp</dimen>
+    <dimen name="avatar_image_dimension">38dp</dimen>
+    <dimen name="individual_comment_padding">1dp</dimen>
+    <dimen name="circle_image_border_width">2dp</dimen>
+    <dimen name="individual_comment_userID_textsize">12sp</dimen>
+    <dimen name="individual_comment_userComment_textsize">12sp</dimen>
+    <dimen name="chat_icon_size">20dp</dimen>
+    <dimen name="chat_icon_start">8dp</dimen>
+    <dimen name="margin_next_to_chat_icon">2dp</dimen>
+    <dimen name="comment_section_text_size">16sp</dimen>
+    <dimen name="avatar_image_border_width">2dp</dimen>
+    <dimen name="enter_comment_margin">6dp</dimen>
+    <dimen name="enter_comment_height">55dp</dimen>
+    <dimen name="enter_comment_editText_margin_top">8dp</dimen>
+    <dimen name="fab_size">50dp</dimen>
+    <dimen name="radio_question_margin_bottom">5dp</dimen>
 </resources>

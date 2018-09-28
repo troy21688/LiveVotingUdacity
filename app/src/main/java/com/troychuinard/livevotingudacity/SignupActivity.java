@@ -211,7 +211,7 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
                             Toast.makeText(getApplicationContext(), R.string.no_user_found, Toast.LENGTH_LONG).show();
 
                         } else {
-                            Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), (CharSequence) task.getException(), Toast.LENGTH_LONG).show();
                         }
 
 
