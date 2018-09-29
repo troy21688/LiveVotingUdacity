@@ -11,7 +11,6 @@ import android.view.View;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -99,9 +98,24 @@ public class HomeActivity extends AppCompatActivity {
         mRecyclerview = (RecyclerView) findViewById(R.id.list);
         mPollHolderArray = new ArrayList<>();
         mRecyclerview.getItemAnimator().setChangeDuration(0);
+        mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+        mRecyclerview.setLayoutManager(mLayoutManager);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mFloatingActionAdd = (FloatingActionButton) findViewById(R.id.myFAB);
+        mFloatingActionAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent I = new Intent(getApplicationContext(), CreateActivity.class);
+                startActivity(I);
+            }
+        });
+
+
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -222,7 +236,7 @@ public class HomeActivity extends AppCompatActivity {
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent toClickedPoll = new Intent(getApplicationContext(), PollHostActivity.class);
+                        Intent toClickedPoll = new Intent(getApplicationContext(), PollActivity.class);
                         toClickedPoll.putExtra("POLL_ID", mFireAdapter.getRef(holder.getAdapterPosition()).getKey());
                         startActivity(toClickedPoll);
 

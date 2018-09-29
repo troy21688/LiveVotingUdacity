@@ -88,4 +88,5 @@
     <string name="dialog_done">Done</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_poll_host">PollHostActivity</string>
+    <string name="title_activity_create">CreateActivity</string>
 </resources>
