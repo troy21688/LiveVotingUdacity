@@ -76,7 +76,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
         mAuth = FirebaseAuth.getInstance();
 
 
-
         mCallBackManager = CallbackManager.Factory.create();
 
 
@@ -214,8 +213,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
                             Toast.makeText(getApplicationContext(), (CharSequence) task.getException(), Toast.LENGTH_LONG).show();
                         }
 
-
-
                     }
                 });
         progressDialog.dismiss();
@@ -258,13 +255,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
 
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                         FirebaseAuth loggedInAuth = FirebaseAuth.getInstance();
-//                        String ID = loggedInAuth.getCurrentUser().getUid();
-//                        //TODO: Update handling of display name
-//                        String displayName = mAuth.getCurrentUser().getUid();
-//                        HashMap<String, Object> id = new HashMap<>();
-//                        id.put("user_id", ID);
-//                        id.put("display_name", displayName);
-//                        mUserRef.child(ID).updateChildren(id);
                     }
                 });
     }

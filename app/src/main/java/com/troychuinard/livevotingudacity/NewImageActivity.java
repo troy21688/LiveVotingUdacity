@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.internal.view.SupportMenuItem;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -34,6 +35,8 @@ import com.troychuinard.livevotingudacity.Model.Photo;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -46,23 +49,26 @@ import retrofit2.http.Query;
 
 public class NewImageActivity extends AppCompatActivity {
 
-    private RecyclerView mImageResults;
+    @Nullable
+    @BindView(R.id.flickr_image_results_view)
+    RecyclerView mImageResults;
+    @Nullable
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
+
     private RecyclerView.Adapter mImageResultsAdapter;
     private ArrayList<Photo> mPhotoArray;
     private ArrayList<String> mPhotoURLS;
-    private ProgressBar mProgressBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_image);
+        ButterKnife.bind(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
 
-
-        mImageResults = (RecyclerView) findViewById(R.id.flickr_image_results_view);
         GridLayoutManager glm = new GridLayoutManager(this, 2);
         glm.setOrientation(LinearLayoutManager.VERTICAL);
         mImageResults.setLayoutManager(glm);
@@ -74,7 +80,7 @@ public class NewImageActivity extends AppCompatActivity {
         boolean includeEdge = false;
         mImageResults.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
         mPhotoURLS = new ArrayList<>();
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+
     }
 
     @Override
@@ -86,38 +92,6 @@ public class NewImageActivity extends AppCompatActivity {
 
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
-//        searchItem.expandActionView();
-
-//        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-//            @Override
-//            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-//                Toast.makeText(getApplicationContext(), "OPEN", Toast.LENGTH_LONG).show();
-//
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-//                Toast.makeText(getApplicationContext(), "Close", Toast.LENGTH_LONG).show();
-//                finish();
-//                return false;
-//            }
-//        });
-
-//        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
-//            @Override
-//            public boolean onMenuItemActionExpand(MenuItem item) {
-//                Toast.makeText(getApplicationContext(), "Open", Toast.LENGTH_LONG).show();
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onMenuItemActionCollapse(MenuItem item) {
-//                Toast.makeText(getApplicationContext(), "Back_Press", Toast.LENGTH_LONG).show();
-//                finish();
-//                return true;
-//            }
-//        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

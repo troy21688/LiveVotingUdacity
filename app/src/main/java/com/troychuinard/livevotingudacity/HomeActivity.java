@@ -45,33 +45,37 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
 
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.left_drawer)
+    ListView mDrawerList;
+    @BindView(R.id.action_tool_bar)
+    Toolbar toolbar;
+    @BindView(R.id.list)
+    RecyclerView mRecyclerview;
+    @BindView(R.id.myFAB)
+    FloatingActionButton mFloatingActionAdd;
 
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+
     private ActionBarDrawerToggle mDrawerToggle;
-    private Toolbar toolbar;
-    private boolean isOpen;
-    private ProgressBar mProgressBar;
-    private TextView mProgressText;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthlistener;
 
-    private RecyclerView mRecyclerview;
+
     private DatabaseReference mBaseRef;
     private DatabaseReference mPollsRef;
+
     private LinearLayoutManager mLayoutManager;
-    private FloatingActionButton mFloatingActionAdd;
 
     private FirebaseRecyclerAdapter<Poll, PollHolder> mFireAdapter;
 
+    private boolean isOpen;
 
-    private RecyclerView.ItemAnimator mItemAnimator;
-
-    private ArrayList<PollHolder> mPollHolderArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,16 +99,12 @@ public class HomeActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
-        mRecyclerview = (RecyclerView) findViewById(R.id.list);
-        mPollHolderArray = new ArrayList<>();
         mRecyclerview.getItemAnimator().setChangeDuration(0);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerview.setLayoutManager(mLayoutManager);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mFloatingActionAdd = (FloatingActionButton) findViewById(R.id.myFAB);
         mFloatingActionAdd.setOnClickListener(new View.OnClickListener() {
@@ -139,8 +139,6 @@ public class HomeActivity extends AppCompatActivity {
 
         };
 
-
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
         ArrayList<String> drawerTitleArray = new ArrayList<>();
         drawerTitleArray.add(0, "Home");
         drawerTitleArray.add(1, "Sign Out");

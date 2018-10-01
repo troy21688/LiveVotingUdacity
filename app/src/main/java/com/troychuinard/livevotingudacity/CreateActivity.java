@@ -55,6 +55,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.google.gson.internal.bind.TypeAdapters.UUID;
 
 public class CreateActivity extends AppCompatActivity {
@@ -67,32 +70,25 @@ public class CreateActivity extends AppCompatActivity {
     private StorageReference mStorageRef;
     private StorageReference mFileRef;
 
+    @BindView(R.id.add_image_button)
+    FloatingActionButton mAddImageButton;
+    @BindView(R.id.add_answers_button)
+    ImageView mAddAnswersButton;
+    @BindView(R.id.preview_image)
+    ImageView mImagePreview;
+    @BindView(R.id.create_poll_question_editText)
+    EditText mCreatePollQuestion;
+    @BindView(R.id.create_poll_answer_counter_TextView)
+    TextView mCreatePollAnswerCounter;
+    @BindView(R.id.create_poll_questions_answer_layout)
+    ViewGroup mEditTextAnswerLayout;
+    @BindView(R.id.submit_poll_FAB)
+    FloatingActionButton mSubmitPollCreation;
 
-    private String mParam1;
-    private String mParam2;
-
-    private FloatingActionButton mAddImageButton;
-
-    private ImageView mAddAnswersButton;
-    private ImageView mImagePreview;
-    private String mSpinnerPosition;
-    private String mFinalPollQuestion;
-
-    private EditText mCreatePollQuestion;
-
-    private View mRootView;
-
-    private TextInputLayout mCreatePollAnswer;
-    private EditText mCreatePollAnswerEditText;
-    private TextView mCreatePollAnswerCounter;
     private int mNumberOfPollAnswersCreatedByUser;
-    private ViewGroup mEditTextAnswerLayout;
-    private FloatingActionButton mSubmitPollCreation;
+
     private String resultImageURL;
     private ArrayList<String> mPollAnswers;
-
-    private Uri imageUri;
-
 
     private static final int USE_WEB = 1;
     private static final int TAKE_PICTURE = 2;
@@ -102,6 +98,7 @@ public class CreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        ButterKnife.bind(this);
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReferenceFromUrl("gs://fan-polls-udacity.appspot.com");
 
@@ -109,13 +106,7 @@ public class CreateActivity extends AppCompatActivity {
         mBaseRef = FirebaseDatabase.getInstance().getReference();
         mPollsRef = mBaseRef.child("Polls");
         mUserRef = mBaseRef.child("Users");
-        mAddImageButton = (FloatingActionButton) findViewById(R.id.add_image_button);
-        mAddAnswersButton = (ImageView) findViewById(R.id.add_answers_button);
-        mImagePreview = (ImageView) findViewById(R.id.preview_image);
-        mCreatePollQuestion = (EditText) findViewById(R.id.create_poll_question_editText);
-        mCreatePollAnswerCounter = (TextView) findViewById(R.id.create_poll_answer_counter_TextView);
-        mEditTextAnswerLayout = (ViewGroup) findViewById(R.id.create_poll_questions_answer_layout);
-        mSubmitPollCreation = (FloatingActionButton) findViewById(R.id.submit_poll_FAB);
+
         mNumberOfPollAnswersCreatedByUser = 2;
         mCreatePollAnswerCounter.setText(String.valueOf(mNumberOfPollAnswersCreatedByUser));
         mPollAnswers = new ArrayList<>();
@@ -127,7 +118,6 @@ public class CreateActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mNumberOfPollAnswersCreatedByUser++;
                 if (mNumberOfPollAnswersCreatedByUser > 5) {
-                    Toast.makeText(getApplicationContext(), R.string.max_create_answers, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 createAnswerChoice(mNumberOfPollAnswersCreatedByUser);
@@ -142,24 +132,18 @@ public class CreateActivity extends AppCompatActivity {
                 //TODO: Need to check if poll requirements are added, i.e. Question, Answer, ......
                 //check if image has been loaded first
                 if (resultImageURL == null) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_image_selected), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.id.please_add_image),Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 //capture answers
                 if (mNumberOfPollAnswersCreatedByUser > 5) {
-                    Toast.makeText(getApplicationContext(), getResources().getText(R.string.poll_answers_greater_than_five), Toast.LENGTH_LONG).show();
                     mNumberOfPollAnswersCreatedByUser = 5;
                 }
                 for (int i = 0; i < mNumberOfPollAnswersCreatedByUser; i++) {
                     EditText editText = (EditText) mEditTextAnswerLayout.findViewWithTag(getResources().getString(R.string.created_answer_editText_id) + String.valueOf(i + 1));
                     String editTextInputForAnswer = String.valueOf(editText.getText());
                     mPollAnswers.add(0, editTextInputForAnswer);
-//                    final String answerLabel = "answers";
-//                    Map<String, Object> answerChoice = new HashMap<String, Object>();
-//                    answerChoice.put(String.valueOf(i+1), editTextInputForAnswer);
-//                    mBaseRef.child("Polls").child(key).child(answerLabel).updateChildren(answerChoice);
-//                    Toast.makeText(getApplicationContext(),editTextInputForAnswer,Toast.LENGTH_SHORT).show();
                 }
 
                 FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -177,18 +161,6 @@ public class CreateActivity extends AppCompatActivity {
                 for (int i = 0; i < mPollAnswers.size(); i++) {
                     mBaseRef.child("Polls").child(key).child("answers").child(String.valueOf(i + 1)).updateChildren(poll.answerConvert(mPollAnswers, i));
                 }
-
-//                mBaseRef.child("Polls").push().setValue(poll, new DatabaseReference.CompletionListener() {
-//                    @Override
-//                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-//                        if (databaseError == null) {
-//                            Log.v("Poll", "onComplete: SUCCESS");
-//                        } else {
-//                            Log.v("Poll", "onComplete: ", databaseError.toException());
-//                        }
-//                    }
-//                });
-
 
                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 Log.v("USER_ID", userID);
@@ -220,7 +192,6 @@ public class CreateActivity extends AppCompatActivity {
         editText.setTextColor(getResources().getColor(R.color.black));
         String editTextID = ((getResources().getString(R.string.created_answer_editText_id)) + String.valueOf(answerNumber));
         editText.setTag(editTextID);
-        Toast.makeText(getApplicationContext(), editTextID, Toast.LENGTH_SHORT).show();
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         editText.setLayoutParams(layoutParams);
         TextInputLayout newAnswer = new TextInputLayout(CreateActivity.this);
@@ -331,7 +302,6 @@ public class CreateActivity extends AppCompatActivity {
                                 if (takePictureIntent.resolveActivity(getApplication().getPackageManager()) != null) {
                                     startActivityForResult(takePictureIntent, TAKE_PICTURE);
                                 } else {
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.camera_error), Toast.LENGTH_LONG).show();
                                 }
                                 break;
                             case 2:
@@ -362,7 +332,6 @@ public class CreateActivity extends AppCompatActivity {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(getApplicationContext(), "Error Loading Photo", Toast.LENGTH_LONG).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
