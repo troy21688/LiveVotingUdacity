@@ -416,12 +416,10 @@ public class PollActivity extends AppCompatActivity  {
     private void addRadioButtonsWithFirebaseAnswers(int numberOfAnswers, DataSnapshot dataSnapshot) {
         mPollAnswerArrayList = new ArrayList<RadioButton>();
         for (int i = (numberOfAnswers - 1); i >= 0; i--) {
-            Log.e("Number of Answers", "The number of answers is " + numberOfAnswers);
             int indexCreated = ((numberOfAnswers - 1) - i);
             mPollAnswerArrayList.add((indexCreated), new RadioButton((getApplicationContext())));
             mPollAnswerArrayList.get(indexCreated).setId(indexCreated);
             String firebaseChild = String.valueOf(indexCreated + 1);
-            //TODO:Sould be getValue instead of getKey?
             mPollAnswerArrayList.get(indexCreated).setText(((String) dataSnapshot.child(ANSWERS_LABEL).child(firebaseChild).child("answer").getValue()));
             mPollAnswerArrayList.get(indexCreated).setTextColor(getResources().getColor(R.color.black));
             mPollAnswerArrayList.get(indexCreated).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.radio_button_answer_text_size));

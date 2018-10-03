@@ -218,8 +218,6 @@ public class CreateActivity extends AppCompatActivity {
                 }
                 break;
             case TAKE_PICTURE:
-                //TODO: Limit file size to prevent reaching Firebase storage limit
-                //TODO: Do not load bitmap, find way to load complete image
 
                 if (resultCode == CreateActivity.RESULT_OK) {
 

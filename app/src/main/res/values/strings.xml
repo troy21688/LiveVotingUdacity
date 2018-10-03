@@ -27,7 +27,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="Heyward_Poll">Who should play center field for the Chicago Cubs in 2016?</string>
     <string name="View_Comments">View Comments</string>
     <string name="home_title">Today\'s Polls</string>
     <string name="pregs_frag_title">Preferences</string>
@@ -48,8 +47,6 @@
     <string name="discussion_title_text">Discussion</string>
     <string name="latest_title">Latest Polls</string>
     <string name="loading_poll_data">Loading Poll Data....</string>
-    <string name="trending_text">Trending</string>
-    <string name="following_text">Following</string>
     <string name="new_text">New</string>
     <string name="how_many_answers_text">Number of Poll Answers:</string>
     <string name="create_poll_question">What is your poll question?</string>

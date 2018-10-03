@@ -1,7 +1,14 @@
 package com.troychuinard.livevotingudacity;
 
+import android.appwidget.AppWidgetManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +57,9 @@ import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String POLL_QUESTION = "POLL_QUESTION";
+    private static final String POLL_IMAGE_URL = "POLL_IMAGE_URL";
+    private static final String FILTER_ACTION = "UPDATE_WIDGET";
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.left_drawer)
@@ -60,6 +70,8 @@ public class HomeActivity extends AppCompatActivity {
     RecyclerView mRecyclerview;
     @BindView(R.id.myFAB)
     FloatingActionButton mFloatingActionAdd;
+
+    private SharedPreferences pref = getApplicationContext().getSharedPreferences("")
 
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -75,6 +87,8 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseRecyclerAdapter<Poll, PollHolder> mFireAdapter;
 
     private boolean isOpen;
+
+    private MyReceiver myReceiver;
 
 
     @Override
@@ -165,7 +179,6 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case 1:
                         mAuth.signOut();
-                        LoginManager.getInstance().logOut();
                 }
 
             }
@@ -196,7 +209,9 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        setReceiver();
         super.onStart();
+
         mAuthlistener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -240,6 +255,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     }
                 });
+
+                //TODO: Cannot understand how to utilize IntentService to update widget
+                //TODO: Followed this tutorial: https://www.journaldev.com/20735/android-intentservice-broadcastreceiver
+                Intent intent = new Intent(HomeActivity.this, MyService.class);
+                intent.putExtra(POLL_QUESTION, model.getQuestion());
+                intent.putExtra(POLL_IMAGE_URL, model.getImage_URL());
+                startService(intent);
             }
 
             @Override
@@ -257,6 +279,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        unregisterReceiver(myReceiver);
         super.onStop();
         mAuth.removeAuthStateListener(mAuthlistener);
         mFireAdapter.stopListening();
@@ -341,6 +364,25 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setReceiver(){
+        myReceiver = new MyReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(FILTER_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver, intentFilter);
+    }
+
+    private class MyReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String poll_Question = intent.getStringExtra("broadcastMessage");
+
+            //TODO: Update Widget - used answer from https://stackoverflow.com/questions/3455123/programmatically-update-widget-from-activity-service-receiver
+            int[] ids = AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(new ComponentName(getApplicationContext(), PollWidgetProvider.class));
+            PollWidgetProvider pollWidgetProvider = new PollWidgetProvider();
+            pollWidgetProvider.onUpdate(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()),ids);
+        }
     }
 
 
