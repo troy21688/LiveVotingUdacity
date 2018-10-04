@@ -33,6 +33,7 @@
                 android:progressDrawable="@drawable/loading_spinner_white" />
 
             <ImageView
+                android:contentDescription="@string/poll_image"
                 android:layout_margin="4dp"
                 android:id="@+id/pollThumbNailImage"
                 android:layout_width="match_parent"
@@ -68,5 +69,4 @@
         android:layout_width="match_parent"
         android:layout_height=".5dp"
         android:background="@color/white" />
-
 </LinearLayout>

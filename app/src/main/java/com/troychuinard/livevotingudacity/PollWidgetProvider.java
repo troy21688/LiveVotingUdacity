@@ -3,20 +3,32 @@ package com.troychuinard.livevotingudacity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class PollWidgetProvider extends AppWidgetProvider {
 
+    private static final String POLL_QUESTION = "POLL_QUESTION";
+    private static String mPollQuestion;
+
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
+
+        SharedPreferences mPrefs = context.getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = mPrefs.edit();
+
+        mPollQuestion = mPrefs.getString(POLL_QUESTION, null);
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.poll_widget_provider);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        views.setTextViewText(R.id.appwidget_text, mPollQuestion);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

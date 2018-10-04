@@ -71,7 +71,8 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.myFAB)
     FloatingActionButton mFloatingActionAdd;
 
-    private SharedPreferences pref = getApplicationContext().getSharedPreferences("")
+    private SharedPreferences mPrefs;
+    private SharedPreferences.Editor editor;
 
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -101,6 +102,11 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setTitle(R.string.app_name);
         Window window = getWindow();
+
+        setReceiver();
+
+        mPrefs = getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        editor = mPrefs.edit();
 
         mBaseRef = FirebaseDatabase.getInstance().getReference();
         mPollsRef = mBaseRef.child("Polls");
@@ -209,7 +215,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        setReceiver();
         super.onStart();
 
         mAuthlistener = new FirebaseAuth.AuthStateListener() {
@@ -239,6 +244,10 @@ public class HomeActivity extends AppCompatActivity {
 
                 holder.mPollQuestion.setText(model.getQuestion());
                 String voteCount = String.valueOf(model.getVote_count());
+
+                //Update shared prefs with latest question
+                editor.putString(POLL_QUESTION, model.getQuestion());
+                editor.apply();
 
                 //TODO: Investigate formatting of vote count for thousands
                 holder.mVoteCount.setText(voteCount);
@@ -279,12 +288,16 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        unregisterReceiver(myReceiver);
         super.onStop();
         mAuth.removeAuthStateListener(mAuthlistener);
         mFireAdapter.stopListening();
     }
 
+    @Override
+    protected void onPause() {
+        unregisterReceiver(myReceiver);
+        super.onPause();
+    }
 
     public static class PollHolder extends RecyclerView.ViewHolder {
 
