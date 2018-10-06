@@ -14,11 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -63,7 +58,7 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
     private DatabaseReference mBaseRef;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
-    private CallbackManager mCallBackManager;
+
 
 
     @Override
@@ -75,7 +70,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
         mAuth = FirebaseAuth.getInstance();
 
 
-        mCallBackManager = CallbackManager.Factory.create();
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -220,7 +214,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCallBackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void onSignupSuccess() {

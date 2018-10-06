@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.troychuinard.livevotingudacity"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -39,10 +39,7 @@ dependencies {
 
     // Third party
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.facebook.android:facebook-android-sdk:4.+'
-    implementation 'jp.wasabeef:recyclerview-animators:2.2.3'
     implementation 'com.github.clans:fab:1.6.2'
-    implementation 'de.hdodenhof:circleimageview:2.0.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.squareup.picasso:picasso:2.71828'

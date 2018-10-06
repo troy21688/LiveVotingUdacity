@@ -6,6 +6,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
@@ -13,6 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Transition;
+import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.view.View;
 
 import android.app.Activity;
@@ -36,7 +42,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -95,6 +100,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Set Transition
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
+            // Apply activity transition
+        } else {
+            // Swap without transition
+        }
         setContentView(R.layout.activity_home);
         ButterKnife.bind(HomeActivity.this);
         toolbar = findViewById(R.id.action_tool_bar);
@@ -104,6 +117,7 @@ public class HomeActivity extends AppCompatActivity {
         Window window = getWindow();
 
         setReceiver();
+
 
         mPrefs = getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         editor = mPrefs.edit();
@@ -261,7 +275,6 @@ public class HomeActivity extends AppCompatActivity {
                         Intent toClickedPoll = new Intent(getApplicationContext(), PollActivity.class);
                         toClickedPoll.putExtra("POLL_ID", mFireAdapter.getRef(holder.getAdapterPosition()).getKey());
                         startActivity(toClickedPoll);
-
                     }
                 });
 
@@ -295,7 +308,9 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        unregisterReceiver(myReceiver);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
+//        unregisterReceiver(myReceiver);
         super.onPause();
     }
 
@@ -383,7 +398,7 @@ public class HomeActivity extends AppCompatActivity {
         myReceiver = new MyReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(FILTER_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver, intentFilter);
+//        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver, intentFilter);
     }
 
     private class MyReceiver extends BroadcastReceiver{
