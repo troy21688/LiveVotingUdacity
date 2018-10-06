@@ -42,7 +42,6 @@
         </FrameLayout>
 
         <TextView
-            android:text="TEST_TEXT"
             android:layout_toRightOf="@id/image_frame"
             android:layout_toEndOf="@id/image_frame"
             android:layout_marginStart="3dp"
@@ -58,11 +57,11 @@
             android:id="@+id/latest_item_poll_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="test_text_again"
             android:textColor="@color/white"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="2dp"
-            android:layout_gravity="bottom|end"/>
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="4dp" />
     </FrameLayout>
 
     <View

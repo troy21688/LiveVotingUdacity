@@ -214,7 +214,6 @@ public class PollActivity extends AppCompatActivity  {
                 Long totalVoteCount = (Long) dataSnapshot.child(VOTE_COUNT_LABEL).getValue();
                 mTotalVoteCounter.setText(getResources().getString(R.string.total_vote_counter) + " " + totalVoteCount);
                 mTotalVoteCounter.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.vote_count_label_text_size_lower_right));
-                mCommentCounter.setText("52");
                 mCommentCounter.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.vote_count_label_text_size_lower_right));
 
                 //create radio buttons
@@ -347,7 +346,7 @@ public class PollActivity extends AppCompatActivity  {
 
                 DecimalFormat formatter = new DecimalFormat("#,###,###");
                 String totalFormattedVotes = formatter.format(voteCountTotal);
-                mTotalVoteCounter.setText("Votes: " + String.valueOf(totalFormattedVotes));
+                mTotalVoteCounter.setText(getResources().getString(R.string.votes) + String.valueOf(totalFormattedVotes));
 //                mRefAtPollIndexImmediatelyBelowDate.child(VOTE_COUNT_LABEL).setValue(voteCountTotal);
 
             }

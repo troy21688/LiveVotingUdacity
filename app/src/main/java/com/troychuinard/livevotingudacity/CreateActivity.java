@@ -62,6 +62,8 @@ import static com.google.gson.internal.bind.TypeAdapters.UUID;
 
 public class CreateActivity extends AppCompatActivity {
 
+
+
     private DatabaseReference mBaseRef;
     private DatabaseReference mUserRef;
     private DatabaseReference mPollsRef;
@@ -93,6 +95,10 @@ public class CreateActivity extends AppCompatActivity {
     private static final int USE_WEB = 1;
     private static final int TAKE_PICTURE = 2;
     private static final int USE_GALLERY = 3;
+    private static final String POLLS = "Polls";
+    private static final String USERS = "Users";
+    private static final String REFERENCE_URL = "gs://fan-polls-udacity.appspot.com";
+    private static final String ANSWERS = "answers";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +106,12 @@ public class CreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create);
         ButterKnife.bind(this);
         mStorage = FirebaseStorage.getInstance();
-        mStorageRef = mStorage.getReferenceFromUrl("gs://fan-polls-udacity.appspot.com");
+        mStorageRef = mStorage.getReferenceFromUrl(REFERENCE_URL);
 
 
         mBaseRef = FirebaseDatabase.getInstance().getReference();
-        mPollsRef = mBaseRef.child("Polls");
-        mUserRef = mBaseRef.child("Users");
+        mPollsRef = mBaseRef.child(POLLS);
+        mUserRef = mBaseRef.child(USERS);
 
         mNumberOfPollAnswersCreatedByUser = 2;
         mCreatePollAnswerCounter.setText(String.valueOf(mNumberOfPollAnswersCreatedByUser));
@@ -132,7 +138,7 @@ public class CreateActivity extends AppCompatActivity {
                 //TODO: Need to check if poll requirements are added, i.e. Question, Answer, ......
                 //check if image has been loaded first
                 if (resultImageURL == null) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.id.please_add_image),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.please_add_image),Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -152,18 +158,17 @@ public class CreateActivity extends AppCompatActivity {
 
                 Poll poll = new Poll(mCreatePollQuestion.getText().toString(), resultImageURL, mPollAnswers, 0,ID, displayName);
                 Map<String, Object> pollMap = poll.toMap();
-                final String key = mBaseRef.child("Polls").push().getKey();
+                final String key = mBaseRef.child(POLLS).push().getKey();
                 Map<String, Object> childUpdates = new HashMap<String, Object>();
                 childUpdates.put("/Polls/" + key, pollMap);
 
                 mBaseRef.updateChildren(childUpdates);
                 Collections.reverse(mPollAnswers);
                 for (int i = 0; i < mPollAnswers.size(); i++) {
-                    mBaseRef.child("Polls").child(key).child("answers").child(String.valueOf(i + 1)).updateChildren(poll.answerConvert(mPollAnswers, i));
+                    mBaseRef.child(POLLS).child(key).child(ANSWERS).child(String.valueOf(i + 1)).updateChildren(poll.answerConvert(mPollAnswers, i));
                 }
 
                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                Log.v("USER_ID", userID);
                 mUserRef.child(userID).updateChildren(childUpdates);
 
 

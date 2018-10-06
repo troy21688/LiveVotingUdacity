@@ -6,6 +6,7 @@
     android:padding="@dimen/widget_margin">
 
     <ImageView
+        android:contentDescription="@string/poll_image"
         android:id="@+id/appwidget_image"
         android:layout_marginTop="40dp"
         android:layout_gravity="center"

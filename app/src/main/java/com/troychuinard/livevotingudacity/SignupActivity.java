@@ -43,7 +43,6 @@ import static android.os.Build.ID;
 
 
 public class SignupActivity extends AppCompatActivity implements DisplayNameDialogFragment.EditNameDialogListener{
-    private static final String TAG = "SignupActivity";
 
     @BindView(R.id.input_email)
     EditText _emailText;
@@ -94,7 +93,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
                         Intent toHomeActivity = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(toHomeActivity);
                         // User is fsigned in
-                        Log.d("TAG", "onAuthStateChanged:signed_in:" + user.getUid());
 
                     }
 
@@ -128,7 +126,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
         switch (v.getId()) {
             case R.id.btn_signup:
                 signup();
-                Toast.makeText(getApplicationContext(),"HELLO",Toast.LENGTH_LONG).show();
                 break;
             case R.id.btn_signin:
                 signIn();
@@ -138,8 +135,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
 
 
     public void signup() {
-        Log.d(TAG, "Signup");
-
         boolean hasNotEnteredData = checkCredentials();
         if (hasNotEnteredData) {
             return;
@@ -154,7 +149,7 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
+        progressDialog.setMessage(getResources().getString(R.string.creating_account_delay));
         progressDialog.show();
 
         mNewFirebaseUserEmail = _emailText.getText().toString();
@@ -180,13 +175,11 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
             return;
         }
 
-        Log.v(TAG, "SigningIn");
-
 
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Signing In...");
+        progressDialog.setMessage(getResources().getString(R.string.sign_in_delay));
         progressDialog.show();
 
         mNewFirebaseUserEmail = _emailText.getText().toString();
@@ -199,14 +192,12 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.v("SIGN_IN", task.getException().getMessage().toString());
                             Toast.makeText(getApplicationContext(), R.string.no_user_found, Toast.LENGTH_LONG).show();
 
                         } else {
@@ -221,7 +212,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
     private boolean checkCredentials() {
         if ((isNull(_emailText.getText().toString()) || isNull(_passwordText.getText().toString())) || (isEmpty(_emailText.getText().toString()) || isEmpty(_passwordText.getText().toString()))) {
             Toast.makeText(getApplicationContext(), R.string.enter_user_password, Toast.LENGTH_LONG).show();
-            Log.d(TAG, "NULL OR EMPTY CREDENTIALS");
             return true;
         }
         return false;
@@ -248,19 +238,17 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(SignupActivity.this, "Authentication Failed with Email",
+                            Toast.makeText(SignupActivity.this, getResources().getString(R.string.authentication_failed_email),
                                     Toast.LENGTH_SHORT).show();
                         }
 
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                         FirebaseAuth loggedInAuth = FirebaseAuth.getInstance();
                     }
                 });
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), getResources().getString(R.string.login_failed), Toast.LENGTH_LONG).show();
 
         signupButton.setEnabled(true);
         signInButton.setEnabled(true);
@@ -275,14 +263,14 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
         String password = _passwordText.getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            _emailText.setError(getResources().getString(R.string.valid_email));
             valid = false;
         } else {
             _emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 15) {
-            _passwordText.setError("between 4 and 15 alphanumeric characters");
+            _passwordText.setError(getResources().getString(R.string.alphanumeric));
             valid = false;
         } else {
             _passwordText.setError(null);
@@ -309,7 +297,6 @@ public class SignupActivity extends AppCompatActivity implements DisplayNameDial
         user.updateProfile(m).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Log.v("INPUT_TEXT", user.getDisplayName());
                 Toast.makeText(getApplicationContext(), user.getDisplayName().toString(), Toast.LENGTH_LONG).show();
                 Map<String, Object> userMap = new HashMap<>();
                 userMap.put("Display_Name", user.getDisplayName());

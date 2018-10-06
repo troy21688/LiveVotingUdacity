@@ -126,7 +126,7 @@ public class HomeActivity extends AppCompatActivity {
         mLayoutManager.setStackFromEnd(true);
         mRecyclerview.setLayoutManager(mLayoutManager);
 
-        mFloatingActionAdd = (FloatingActionButton) findViewById(R.id.myFAB);
+        mFloatingActionAdd = findViewById(R.id.myFAB);
         mFloatingActionAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,7 +177,7 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "CLICKED 0", Toast.LENGTH_SHORT).show();
                         Log.v("DRAWER", "THE DRAWER HAS BEEN CLICKED");
                         if (getCurrentActivity() instanceof HomeActivity) {
-                            mDrawerLayout.closeDrawer(Gravity.LEFT);
+                            mDrawerLayout.closeDrawer(Gravity.START);
                         } else {
                             Intent I = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(I);
@@ -311,9 +311,9 @@ public class HomeActivity extends AppCompatActivity {
         public PollHolder(View itemView) {
             super(itemView);
 
-            mPollQuestion = (TextView) itemView.findViewById(R.id.latest_item_question);
-            mPollImage = (ImageView) itemView.findViewById(R.id.pollThumbNailImage);
-            mVoteCount = (TextView) itemView.findViewById(R.id.latest_item_poll_count);
+            mPollQuestion = itemView.findViewById(R.id.latest_item_question);
+            mPollImage = itemView.findViewById(R.id.pollThumbNailImage);
+            mVoteCount = itemView.findViewById(R.id.latest_item_poll_count);
             this.mView = itemView;
         }
 

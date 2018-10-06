@@ -89,4 +89,19 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="poll_image">Poll Image</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="blank_poll_image">Empty Poll Image Placeholder</string>
+    <string name="please_add_image">Please Add An Image</string>
+    <string name="application_logo">Application Logo</string>
+    <string name="add_answer_button">Add Answer</string>
+    <string name="fab">New Image Button</string>
+    <string name="create_poll_button">Submit Poll Button</string>
+    <string name="votes">Votes:</string>
+    <string name="authentication_failed_email">Authentication Failed with Email</string>
+    <string name="login_failed">Login Failed</string>
+    <string name="sign_in_delay">Signing In......</string>
+    <string name="valid_email">Enter A Valid Email Address</string>
+    <string name="alphanumeric">Please enter 4-15 alphanumeric characters</string>
+    <string name="creating_account_delay">Creating Account.....</string>
 </resources>

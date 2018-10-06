@@ -34,9 +34,11 @@
                 android:progressDrawable="@drawable/loading_spinner_white" />
 
             <ImageView
+                android:contentDescription="@string/poll_image"
                 android:id="@+id/poll_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></ImageView>
+                android:layout_height="match_parent">
+            </ImageView>
 
         </FrameLayout>
 
@@ -84,6 +86,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:contentDescription="@string/poll_image"
                 android:id="@+id/comments_label_icon"
                 android:layout_width="@dimen/chat_icon_size"
                 android:layout_height="@dimen/chat_icon_size"
@@ -143,8 +146,6 @@
                 android:layout_marginRight="@dimen/chat_icon_start"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-
-
         </RelativeLayout>
 
 

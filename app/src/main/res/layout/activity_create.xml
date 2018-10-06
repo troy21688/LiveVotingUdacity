@@ -11,6 +11,7 @@
         android:layout_weight=".4">
 
         <ImageView
+            android:contentDescription="@string/blank_poll_image"
             android:scaleType="fitXY"
             android:id="@+id/preview_image"
             android:layout_width="match_parent"
@@ -22,6 +23,7 @@
         </ImageView>
 
         <android.support.design.widget.FloatingActionButton
+            android:contentDescription="@string/fab"
             app:backgroundTint="@color/actionRed"
             android:id="@+id/add_image_button"
             android:layout_width="wrap_content"
@@ -106,6 +108,7 @@
 
 
                     <ImageView
+                        android:contentDescription="@string/add_answer_button"
                         android:id="@+id/add_answers_button"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -117,6 +120,7 @@
                         android:layout_marginEnd="6dp"
                         android:layout_marginRight="6dp"
                         android:background="@drawable/fab_transparent"
+                        android:focusable="true"
                         android:clickable="true"
                         android:src="@drawable/ic_add_white_24dp"
                         android:visibility="visible" />
@@ -129,6 +133,7 @@
         </ScrollView>
 
         <android.support.design.widget.FloatingActionButton
+            android:contentDescription="@string/create_poll_button"
             android:id="@+id/submit_poll_FAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -137,6 +142,7 @@
             android:layout_marginEnd="6dp"
             android:layout_marginRight="6dp"
             android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/ic_navigate_next_white_24dp"
             android:visibility="visible"
             app:backgroundTint="@color/actionRed"

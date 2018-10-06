@@ -49,6 +49,7 @@ import retrofit2.http.Query;
 
 public class NewImageActivity extends AppCompatActivity {
 
+
     @Nullable
     @BindView(R.id.flickr_image_results_view)
     RecyclerView mImageResults;
@@ -59,6 +60,10 @@ public class NewImageActivity extends AppCompatActivity {
     private RecyclerView.Adapter mImageResultsAdapter;
     private ArrayList<Photo> mPhotoArray;
     private ArrayList<String> mPhotoURLS;
+
+    private static final String BASE_URL = "https://api.flickr.com/services/rest/";
+    private static final String RESULT = "result";
+    private static final String FLICKR_SEARCH = "?method=flickr.photos.search&api_key=1c448390199c03a6f2d436c40defd90e&license=4&format=json&nojsoncallback=1&extras=url_m";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +114,7 @@ public class NewImageActivity extends AppCompatActivity {
                 interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                 OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://api.flickr.com/services/rest/")
+                        .baseUrl(BASE_URL)
                         .client(client)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
@@ -120,21 +125,15 @@ public class NewImageActivity extends AppCompatActivity {
                 call.enqueue(new Callback<Flicker>() {
                     @Override
                     public void onResponse(Call<Flicker> call, Response<Flicker> response) {
-                        Log.v("RESPONSE_CALLED", "ON_RESPONSE_CALLED");
                         String didItWork = String.valueOf(response.isSuccessful());
-                        Log.v("SUCCESS?", didItWork);
-                        Log.v("RESPONSE_CODE", String.valueOf(response.code()));
                         Flicker testResponse = response.body();
-                        Log.v("RESPONSE_BODY", "response:" + testResponse);
                         String total = response.body().getPhotos().getTotal().toString();
-                        Log.v("Total", total);
                         List<Photo> photoResults = response.body().getPhotos().getPhoto();
                         int numberOfPages = response.body().getPhotos().getPages();
                         for (int i = 0; i < numberOfPages; i++) {
                             for (Photo photo : photoResults) {
                                 if (photo.getUrl_m() != null) {
                                     String photoURL = photo.getUrl_m();
-//                                    Log.v("PHOTO_URL:", photoURL);
                                     mPhotoURLS.add(photoURL);
                                     mImageResultsAdapter.notifyDataSetChanged();
                                 }
@@ -204,7 +203,6 @@ public class NewImageActivity extends AppCompatActivity {
         //The OutOfBoundsException is pointing here
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
-            Log.v("ON_BIND", "ON_BINDVIEWHOLDER CALLED");
             final String urlForPhoto = mPhotoURLS.get(position);
             if (mProgressBar.getVisibility() == View.VISIBLE) {
                 mProgressBar.setVisibility(View.INVISIBLE);
@@ -224,7 +222,7 @@ public class NewImageActivity extends AppCompatActivity {
                     builder.setPositiveButton((getResources().getString(R.string.yes)), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             Intent returnIntent = new Intent();
-                            returnIntent.putExtra("result", urlForPhoto);
+                            returnIntent.putExtra(RESULT, urlForPhoto);
                             setResult(NewImageActivity.RESULT_OK,returnIntent);
                             finish();
                         }
@@ -256,9 +254,8 @@ public class NewImageActivity extends AppCompatActivity {
 
     public interface ApiInterface {
 
-        @GET("?method=flickr.photos.search&api_key=1c448390199c03a6f2d436c40defd90e&license=4&format=json&nojsoncallback=1&extras=url_m")
+        @GET(FLICKR_SEARCH)
         Call<Flicker> getImages(@Query("text") String query);
-
 
     }
 
