@@ -10,8 +10,8 @@
         android:id="@+id/appwidget_image"
         android:layout_marginTop="40dp"
         android:layout_gravity="center"
-        android:layout_width="300dp"
-        android:layout_height="200dp" />
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
 
     <TextView
         android:layout_marginTop="00dp"
@@ -24,7 +24,6 @@
         android:layout_margin="8dp"
         android:background="@color/actionRed"
         android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
         android:textColor="#ffffff"
         android:textSize="24sp"
         android:textStyle="bold|italic" />

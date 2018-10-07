@@ -104,4 +104,5 @@
     <string name="valid_email">Enter A Valid Email Address</string>
     <string name="alphanumeric">Please enter 4-15 alphanumeric characters</string>
     <string name="creating_account_delay">Creating Account.....</string>
+    <string name="please_open_application">Please open app to view latest polls!</string>
 </resources>
