@@ -1,59 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/action_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/actionRed"
+            android:titleTextColor="@color/white">
+        </android.support.v7.widget.Toolbar>
+
+        <FrameLayout
+            android:id="@+id/poll_feed_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <android.support.design.widget.FloatingActionButton
-            android:contentDescription="@string/create_poll_button"
-            android:visibility="visible"
             android:id="@+id/myFAB"
-            android:focusable="true"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/actionRed"
             android:layout_gravity="bottom|end"
+            android:layout_marginBottom="6dp"
             android:layout_marginEnd="6dp"
             android:layout_marginRight="6dp"
-            android:layout_marginBottom="6dp"
-            app:srcCompat="@drawable/ic_add_white_24dp"
+            android:clickable="true"
+            android:contentDescription="@string/create_poll_button"
+            android:focusable="true"
+            android:visibility="visible"
+            app:backgroundTint="@color/actionRed"
             app:elevation="4dp"
-            />
+            app:srcCompat="@drawable/ic_add_white_24dp" />
+
+        </FrameLayout>
 
 
-        <LinearLayout
-            android:id="@+id/content_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/action_tool_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/actionRed"
-                android:titleTextColor="@color/white">
-            </android.support.v7.widget.Toolbar>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:focusable="true"
-                android:scrollbars="vertical" />
-
-        </LinearLayout>
-
-    </FrameLayout>
+    </LinearLayout>
 
     <!-- The navigation drawer -->
 
@@ -63,8 +53,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#111"
-    android:choiceMode="singleChoice"
-    android:divider="@android:color/transparent"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
         android:dividerHeight="0dp" />
 
 </android.support.v4.widget.DrawerLayout>

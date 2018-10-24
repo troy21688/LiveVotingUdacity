@@ -10,8 +10,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,10 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
-import com.troychuinard.livevotingudacity.HomeActivity;
 import com.troychuinard.livevotingudacity.Model.Poll;
 import com.troychuinard.livevotingudacity.MyService;
-import com.troychuinard.livevotingudacity.PollActivity;
 import com.troychuinard.livevotingudacity.PollWidgetProvider;
 import com.troychuinard.livevotingudacity.R;
 
@@ -60,8 +58,6 @@ public class FeedFragment extends Fragment {
 
     @BindView(R.id.list)
     RecyclerView mRecyclerview;
-    @BindView(R.id.myFAB)
-    FloatingActionButton mFloatingActionAdd;
 
     private SharedPreferences mPrefs;
     private SharedPreferences.Editor editor;
@@ -110,8 +106,9 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_feed, container, false);
+        View v = inflater.inflate(R.layout.fragment_poll_feed, container, false);
         ButterKnife.bind(this, v);
+
 
         mPrefs = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         editor = mPrefs.edit();
@@ -122,6 +119,8 @@ public class FeedFragment extends Fragment {
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerview.setLayoutManager(mLayoutManager);
+
+        setReceiver();
 
         return v;
     }
@@ -182,14 +181,6 @@ public class FeedFragment extends Fragment {
                         .load(model.getImage_URL())
                         .fit()
                         .into(holder.mPollImage);
-                holder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent toClickedPoll = new Intent(getContext(), PollActivity.class);
-                        toClickedPoll.putExtra("POLL_ID", mFireAdapter.getRef(holder.getAdapterPosition()).getKey());;
-                        startActivity(toClickedPoll);
-                    }
-                });
 
                 //TODO: Cannot understand how to utilize IntentService to update widget
                 //TODO: Followed this tutorial: https://www.journaldev.com/20735/android-intentservice-broadcastreceiver
@@ -198,6 +189,19 @@ public class FeedFragment extends Fragment {
                 intent.putExtra(POLL_IMAGE_URL, model.getImage_URL());
 
                 getActivity().startService(intent);
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String pollID = mFireAdapter.getRef(holder.getAdapterPosition()).getKey();
+                        Fragment pollFragment = PollFragment.newInstance(pollID);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.fadein, R.anim.fadeout);
+                        ft.replace(R.id.poll_feed_fragment, pollFragment);
+                        ft.commit();
+
+                    }
+                });
 
             }
 

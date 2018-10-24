@@ -29,12 +29,6 @@
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".PollActivity"
-            android:label="@string/title_activity_poll_host"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:name=".CreateActivity"
             android:label="@string/title_activity_create"
             android:theme="@style/AppTheme.NoActionBar" />
