@@ -42,6 +42,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.troychuinard.livevotingudacity.HomeActivity;
 import com.troychuinard.livevotingudacity.Model.MyDataValueFormatter;
 import com.troychuinard.livevotingudacity.R;
 
@@ -165,6 +166,7 @@ public class PollFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_poll, container, false);
         ButterKnife.bind(v);
 
+        Toolbar toolbar = getActivity().findViewById(R.id.action_tool_bar);
 
 
         mPollResults = (HorizontalBarChart) v.findViewById(R.id.poll_results_chart);
@@ -350,11 +352,17 @@ public class PollFragment extends Fragment {
         //TODO: Check attachment to Activity; when adding a color, the getResources.getColor states
         //TODO: that the fragment was detached from the activity; potentially add this method to onCreateView() to avoid;
         ArrayList<Integer> barColors = new ArrayList<>();
-        barColors.add(ContextCompat.getColor(getContext(), R.color.bar_one));
-        barColors.add(ContextCompat.getColor(getContext(), R.color.bar_two));
-        barColors.add(ContextCompat.getColor(getContext(), R.color.bar_three));
-        barColors.add(ContextCompat.getColor(getContext(), R.color.bar_four));
-        barColors.add(ContextCompat.getColor(getContext(), R.color.bar_five));
+        barColors.add(R.color.bar_one);
+        barColors.add(R.color.bar_two);
+        barColors.add(R.color.bar_three);
+        barColors.add(R.color.bar_four);
+        barColors.add(R.color.bar_five);
+
+//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(),R.color.bar_one));
+//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_two));
+//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_three));
+//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_four));
+//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_five));
         data.setColors(barColors);
 
         data.setAxisDependency(YAxis.AxisDependency.LEFT);

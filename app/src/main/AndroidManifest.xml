@@ -21,21 +21,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:name=".CreateActivity"
             android:label="@string/title_activity_create"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:name=".NewImageActivity"
+           android:name=".NewImageActivity"
             android:label="@string/title_activity_new_image"
             android:theme="@style/AppTheme">
             <intent-filter>
