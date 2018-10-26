@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignupActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".SignupActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +29,7 @@
             android:label="@string/title_activity_create"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-           android:name=".NewImageActivity"
+            android:name=".NewImageActivity"
             android:label="@string/title_activity_new_image"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -50,6 +50,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/poll_widget_provider_info" />
         </receiver>
+
+        <activity
+            android:name=".PollHostActivity"
+            android:label="@string/title_activity_poll_host"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

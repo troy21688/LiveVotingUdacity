@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +40,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -48,6 +50,7 @@ import com.troychuinard.livevotingudacity.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +68,8 @@ public class PollFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String VOTERS = "Voters";
+    private static final String ID = "ID";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -122,6 +127,8 @@ public class PollFragment extends Fragment {
     private int mPollIndex;
     private ProgressBar mProgressBar;
     private CheckBox mFollowingCheck;
+    private Context mContext;
+    private boolean hasVoted;
 
 
     private OnFragmentInteractionListener mListener;
@@ -166,13 +173,9 @@ public class PollFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_poll, container, false);
         ButterKnife.bind(v);
 
-        Toolbar toolbar = getActivity().findViewById(R.id.action_tool_bar);
 
 
-        mPollResults = (HorizontalBarChart) v.findViewById(R.id.poll_results_chart);
-        mPollResults.setBackgroundColor(getResources().getColor(R.color.white));
-        mPollResults.setNoDataTextDescription(getResources().getString(R.string.no_results_description));
-        mPollResults.setVisibility(View.INVISIBLE);
+
 
         mTotalVoteCounter = (TextView) v.findViewById(R.id.total_vote_counter);
         mCommentCounter = (TextView) v.findViewById(R.id.comment_label_counter);
@@ -186,6 +189,31 @@ public class PollFragment extends Fragment {
         mFollowingCheck = (CheckBox) v.findViewById(R.id.following_check);
 
         mParams = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        mPollResults = (HorizontalBarChart) v.findViewById(R.id.poll_results_chart);
+        mPollResults.setBackgroundColor(getResources().getColor(R.color.white));
+        mPollResults.setNoDataTextDescription(getResources().getString(R.string.no_results_description));
+
+        Query q = mSelectedPollRef.child(VOTERS);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot x: dataSnapshot.getChildren()){
+                    if (x.getValue().equals(mUserID)){
+                        Log.v("TEST", x.getValue().toString());
+                        mPollResults.setVisibility(View.VISIBLE);
+                        mPollQuestionRadioGroup.setVisibility(View.INVISIBLE);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
 
         mSelectedPollRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -258,7 +286,9 @@ public class PollFragment extends Fragment {
                 //TODO: Add user reference in Firebase and update
 //                mUserRef.child(UID).child("Poll_Votes").child(pollID).child("Vote_Selection").setValue(selectedRadioButtonPollAnswer);
 //                mUserRef.child(UID).child("Poll_Votes").child(pollID).child("Has_Voted").setValue("True");
-
+                HashMap<String, Object> userID = new HashMap<>();
+                userID.put(ID, UID);
+                mSelectedPollRef.child(VOTERS).updateChildren(userID);
 
                 //Update Firebase poll total vote count
                 increasePollTotalVoteCounter(checkedRadioButtonID);
@@ -352,17 +382,17 @@ public class PollFragment extends Fragment {
         //TODO: Check attachment to Activity; when adding a color, the getResources.getColor states
         //TODO: that the fragment was detached from the activity; potentially add this method to onCreateView() to avoid;
         ArrayList<Integer> barColors = new ArrayList<>();
-        barColors.add(R.color.bar_one);
-        barColors.add(R.color.bar_two);
-        barColors.add(R.color.bar_three);
-        barColors.add(R.color.bar_four);
-        barColors.add(R.color.bar_five);
+//        barColors.add(R.color.bar_one);
+//        barColors.add(R.color.bar_two);
+//        barColors.add(R.color.bar_three);
+//        barColors.add(R.color.bar_four);
+//        barColors.add(R.color.bar_five);
 
-//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(),R.color.bar_one));
-//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_two));
-//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_three));
-//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_four));
-//        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_five));
+        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(),R.color.bar_one));
+        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_two));
+        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_three));
+        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_four));
+        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_five));
         data.setColors(barColors);
 
         data.setAxisDependency(YAxis.AxisDependency.LEFT);

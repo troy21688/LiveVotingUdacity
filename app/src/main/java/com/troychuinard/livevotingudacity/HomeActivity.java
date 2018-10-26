@@ -55,6 +55,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.troychuinard.livevotingudacity.Fragment.BlankFragment;
 import com.troychuinard.livevotingudacity.Fragment.FeedFragment;
 import com.troychuinard.livevotingudacity.Fragment.PollFragment;
 import com.troychuinard.livevotingudacity.Model.Poll;
@@ -67,7 +68,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity implements FeedFragment.OnFragmentInteractionListener, PollFragment.OnFragmentInteractionListener {
+public class HomeActivity extends AppCompatActivity implements FeedFragment.OnFragmentInteractionListener, PollFragment.OnFragmentInteractionListener, BlankFragment.OnFragmentInteractionListener {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -82,6 +83,8 @@ public class HomeActivity extends AppCompatActivity implements FeedFragment.OnFr
     private ActionBarDrawerToggle mDrawerToggle;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthlistener;
+
+    private boolean mTwoPane;
 
 
     private boolean isOpen;
@@ -105,6 +108,23 @@ public class HomeActivity extends AppCompatActivity implements FeedFragment.OnFr
         setSupportActionBar(toolbar);
         setTitle(R.string.app_name);
         Window window = getWindow();
+        mTwoPane = false;
+
+        if (savedInstanceState == null){
+            FeedFragment feedFragment = new FeedFragment();
+            FragmentManager fm = getSupportFragmentManager();
+            fm.beginTransaction()
+                    .add(R.id.poll_feed_fragment, feedFragment)
+                    .commit();
+
+            if (findViewById(R.id.two_pane_constraint_layout) != null & getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                mTwoPane = true;
+                BlankFragment blankFragment = new BlankFragment();
+                fm.beginTransaction()
+                        .add(R.id.poll_fragment, blankFragment)
+                        .commit();
+            }
+        }
 
 //        window.setStatusBarColor(getResources().getColor(R.color.actionRed));
 
@@ -179,13 +199,7 @@ public class HomeActivity extends AppCompatActivity implements FeedFragment.OnFr
             }
         });
 
-        if (savedInstanceState == null){
-            FeedFragment feedFragment = new FeedFragment();
-            FragmentManager fm = getSupportFragmentManager();
-            fm.beginTransaction()
-                    .add(R.id.poll_feed_fragment, feedFragment)
-                    .commit();
-        }
+
 
     }
 

@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +30,7 @@ import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 import com.troychuinard.livevotingudacity.Model.Poll;
 import com.troychuinard.livevotingudacity.MyService;
+import com.troychuinard.livevotingudacity.PollHostActivity;
 import com.troychuinard.livevotingudacity.PollWidgetProvider;
 import com.troychuinard.livevotingudacity.R;
 
@@ -52,6 +55,7 @@ public class FeedFragment extends Fragment {
     private static final String POLL_QUESTION = "POLL_QUESTION";
     private static final String POLL_IMAGE_URL = "POLL_IMAGE_URL";
     private static final String FILTER_ACTION = "UPDATE_WIDGET";
+    private static final String POLL_ID = "POLL_ID";
 
     private MyReceiver myReceiver;
 
@@ -193,13 +197,22 @@ public class FeedFragment extends Fragment {
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String pollID = mFireAdapter.getRef(holder.getAdapterPosition()).getKey();
-                        Fragment pollFragment = PollFragment.newInstance(pollID);
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.setCustomAnimations(R.anim.fadein, R.anim.fadeout);
-                        ft.replace(R.id.poll_feed_fragment, pollFragment);
-                        ft.commit();
 
+                        String pollID = mFireAdapter.getRef(holder.getAdapterPosition()).getKey();
+
+                        if (getActivity().findViewById(R.id.two_pane_constraint_layout) != null & getActivity().getApplication().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                            FragmentManager fm = getActivity().getSupportFragmentManager();
+                            PollFragment pollFragment = PollFragment.newInstance(pollID);
+                            fm.beginTransaction()
+                                    .replace(R.id.poll_fragment, pollFragment)
+                                    .commit();
+                        } else {
+
+                            Intent i = new Intent(getActivity().getApplicationContext(), PollHostActivity.class);
+                            i.putExtra(POLL_ID, pollID);
+                            startActivity(i);
+
+                        }
                     }
                 });
 
