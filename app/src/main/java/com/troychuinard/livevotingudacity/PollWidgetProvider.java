@@ -1,5 +1,6 @@
 package com.troychuinard.livevotingudacity;
 
+import android.app.Notification;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -8,6 +9,8 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import com.squareup.picasso.Picasso;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -44,12 +47,17 @@ public class PollWidgetProvider extends AppWidgetProvider {
         }
 
         if (mPollImage == null){
+            Picasso.get()
+                    .load(R.drawable.fan_polls_logo)
+                    .into(views, R.id.appwidget_image, new int[] { appWidgetId });
+
             views.setImageViewResource(R.id.appwidget_image, R.drawable.fan_polls_logo);
 
         } else {
             Uri imageURI = Uri.parse(mPollImage);
-            views.setImageViewUri(R.id.appwidget_image, imageURI);
-        }
+            Picasso.get()
+                    .load(imageURI)
+                    .into(views, R.id.appwidget_image, new int[] { appWidgetId });        }
 
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);

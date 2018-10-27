@@ -10,7 +10,9 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -56,6 +58,10 @@ public class FeedFragment extends Fragment {
     private static final String POLL_IMAGE_URL = "POLL_IMAGE_URL";
     private static final String FILTER_ACTION = "UPDATE_WIDGET";
     private static final String POLL_ID = "POLL_ID";
+    private static final String RECYCLERVIEW_STATE = "Recyclerview_State";
+
+    private Parcelable mRecyclerViewState;
+    private static Bundle mRecyclerViewBundle;
 
     private MyReceiver myReceiver;
 
@@ -116,6 +122,10 @@ public class FeedFragment extends Fragment {
 
         mPrefs = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         editor = mPrefs.edit();
+        if (savedInstanceState != null) {
+            mRecyclerViewState = savedInstanceState.getParcelable(RECYCLERVIEW_STATE);
+        }
+
 
         mRecyclerview.getItemAnimator().setChangeDuration(0);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -152,6 +162,49 @@ public class FeedFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+//    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        mRecyclerViewState = mLayoutManager.onSaveInstanceState();
+//        outState.putParcelable(RECYCLERVIEW_STATE, mRecyclerViewState);
+//    }
+
+//
+//
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//        if (savedInstanceState != null){
+//            mRecyclerViewState = savedInstanceState.getParcelable(RECYCLERVIEW_STATE);
+//        }
+//    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mRecyclerViewState = mLayoutManager.onSaveInstanceState();
+        outState.putParcelable(RECYCLERVIEW_STATE, mRecyclerViewState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null){
+            mRecyclerViewState = savedInstanceState.getParcelable(RECYCLERVIEW_STATE);
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mRecyclerViewState != null){
+            mLayoutManager.onRestoreInstanceState(mRecyclerViewState);
+        }
+    }
+
 
 
     @Override
@@ -200,7 +253,7 @@ public class FeedFragment extends Fragment {
 
                         String pollID = mFireAdapter.getRef(holder.getAdapterPosition()).getKey();
 
-                        if (getActivity().findViewById(R.id.two_pane_constraint_layout) != null & getActivity().getApplication().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                        if (getActivity().findViewById(R.id.two_pane_constraint_layout) != null & getActivity().getApplication().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                             FragmentManager fm = getActivity().getSupportFragmentManager();
                             PollFragment pollFragment = PollFragment.newInstance(pollID);
                             fm.beginTransaction()
@@ -260,14 +313,14 @@ public class FeedFragment extends Fragment {
 
     }
 
-    private void setReceiver(){
+    private void setReceiver() {
         myReceiver = new MyReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(FILTER_ACTION);
 //        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver, intentFilter);
     }
 
-    private void scrollToPosition(){
+    private void scrollToPosition() {
         mFireAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -294,7 +347,7 @@ public class FeedFragment extends Fragment {
             //TODO: Update Widget - used answer from https://stackoverflow.com/questions/3455123/programmatically-update-widget-from-activity-service-receiver
             int[] ids = AppWidgetManager.getInstance(getContext()).getAppWidgetIds(new ComponentName(getContext(), PollWidgetProvider.class));
             PollWidgetProvider pollWidgetProvider = new PollWidgetProvider();
-            pollWidgetProvider.onUpdate(getContext(), AppWidgetManager.getInstance(getContext()),ids);
+            pollWidgetProvider.onUpdate(getContext(), AppWidgetManager.getInstance(getContext()), ids);
         }
     }
 

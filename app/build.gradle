@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'Udacity'
             keyPassword 'Udacity123'
-            storeFile file('/Users/troychuinard/Applications/LiveVotingUdacity/livevotingkeystore')
+            storeFile file('../livevotingkeystore')
             storePassword 'Udacity123'
         }
     }

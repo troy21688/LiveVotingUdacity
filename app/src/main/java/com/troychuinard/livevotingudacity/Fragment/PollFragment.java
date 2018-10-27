@@ -130,6 +130,9 @@ public class PollFragment extends Fragment {
     private Context mContext;
     private boolean hasVoted;
 
+    private ArrayList<Integer> mBarColors;
+
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -193,6 +196,8 @@ public class PollFragment extends Fragment {
         mPollResults = (HorizontalBarChart) v.findViewById(R.id.poll_results_chart);
         mPollResults.setBackgroundColor(getResources().getColor(R.color.white));
         mPollResults.setNoDataTextDescription(getResources().getString(R.string.no_results_description));
+
+        mBarColors = new ArrayList<>();
 
         Query q = mSelectedPollRef.child(VOTERS);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -359,6 +364,12 @@ public class PollFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mSelectedPollRef.removeEventListener(valueEventListener);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -381,19 +392,21 @@ public class PollFragment extends Fragment {
 //        data.setColors(new int[]{getResources().getColor(R.color.black)});
         //TODO: Check attachment to Activity; when adding a color, the getResources.getColor states
         //TODO: that the fragment was detached from the activity; potentially add this method to onCreateView() to avoid;
-        ArrayList<Integer> barColors = new ArrayList<>();
+//        ArrayList<Integer> barColors = new ArrayList<>();
 //        barColors.add(R.color.bar_one);
 //        barColors.add(R.color.bar_two);
 //        barColors.add(R.color.bar_three);
 //        barColors.add(R.color.bar_four);
 //        barColors.add(R.color.bar_five);
 
-        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(),R.color.bar_one));
-        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_two));
-        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_three));
-        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_four));
-        barColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_five));
-        data.setColors(barColors);
+        mBarColors.clear();
+
+        mBarColors.add(ContextCompat.getColor(getActivity().getApplicationContext(),R.color.bar_one));
+        mBarColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_two));
+        mBarColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_three));
+        mBarColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_four));
+        mBarColors.add(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.bar_five));
+        data.setColors(mBarColors);
 
         data.setAxisDependency(YAxis.AxisDependency.LEFT);
         MyDataValueFormatter f = new MyDataValueFormatter();
@@ -461,6 +474,8 @@ public class PollFragment extends Fragment {
         mPollResults.invalidate();
     }
 
+
+
     private void addRadioButtonsWithFirebaseAnswers(int numberOfAnswers, DataSnapshot dataSnapshot) {
         mPollAnswerArrayList = new ArrayList<RadioButton>();
         for (int i = (numberOfAnswers - 1); i >= 0; i--) {
@@ -474,7 +489,7 @@ public class PollFragment extends Fragment {
 
             //TODO: Determne which type of RadioButton to use for consistency; rendering on different API levels
             if (Build.VERSION.SDK_INT >= 21) {
-                mPollAnswerArrayList.get(indexCreated).setButtonTintMode(PorterDuff.Mode.DARKEN);
+//                mPollAnswerArrayList.get(indexCreated).setButtonTintMode(PorterDuff.Mode.DARKEN);
             } else {
                 mPollAnswerArrayList.get(indexCreated).setButtonDrawable(R.drawable.black_ring);
             }
