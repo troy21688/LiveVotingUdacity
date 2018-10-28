@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 import com.troychuinard.livevotingudacity.Model.Poll;
+import com.troychuinard.livevotingudacity.Model.StatefulRecyclerView;
 import com.troychuinard.livevotingudacity.MyService;
 import com.troychuinard.livevotingudacity.PollHostActivity;
 import com.troychuinard.livevotingudacity.PollWidgetProvider;
@@ -132,6 +133,7 @@ public class FeedFragment extends Fragment {
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
+        mRecyclerview.setSaveEnabled(true);
         mRecyclerview.setLayoutManager(mLayoutManager);
 
         setReceiver();
@@ -170,40 +172,19 @@ public class FeedFragment extends Fragment {
 //        outState.putParcelable(RECYCLERVIEW_STATE, mRecyclerViewState);
 //    }
 
-//
-//
-//    @Override
-//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-//        super.onViewStateRestored(savedInstanceState);
-//        if (savedInstanceState != null){
-//            mRecyclerViewState = savedInstanceState.getParcelable(RECYCLERVIEW_STATE);
-//        }
-//    }
 
-
+    //Save Recyclerview position on navigation
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mRecyclerViewState = mLayoutManager.onSaveInstanceState();
-        outState.putParcelable(RECYCLERVIEW_STATE, mRecyclerViewState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null){
-            mRecyclerViewState = savedInstanceState.getParcelable(RECYCLERVIEW_STATE);
-        }
+        outState.putParcelable(RECYCLERVIEW_STATE, mLayoutManager.onSaveInstanceState());
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mRecyclerViewState != null){
-            mLayoutManager.onRestoreInstanceState(mRecyclerViewState);
-        }
-    }
+
+
+
 
 
 
@@ -280,8 +261,12 @@ public class FeedFragment extends Fragment {
             }
         };
 
-        mRecyclerview.setAdapter(mFireAdapter);
-        scrollToPosition();
+        if (mRecyclerViewState != null) {
+            mLayoutManager.onRestoreInstanceState(mRecyclerViewState);
+        } else {
+            mRecyclerview.setAdapter(mFireAdapter);
+            scrollToPosition();
+        }
         mFireAdapter.startListening();
     }
 
